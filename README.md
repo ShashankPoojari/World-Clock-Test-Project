@@ -1,6 +1,9 @@
 # World Clock Test Project
 
-A lightweight, single-file web application that displays the current time across multiple time zones. **Note:** This project was developed as a test project to experiment with time zone handling using native browser APIs.
+A lightweight, single-file web application that displays the current time across multiple time zones. 
+
+
+**Note:** This project was developed as a test project to experiment with time zone handling using native browser APIs.
 
 [Live Demo](https://shashankpoojari.github.io/World-Clock-Test-Project/)
 
