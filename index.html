@@ -6,26 +6,50 @@
     <title>World Clock</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --background-color: #f5f6fa;
-            --text-color: #2c3e50;
-            --positive-color: #27ae60;
-            --negative-color: #c0392b;
-            --neutral-color: #7f8c8d;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --text-tertiary: #adb5bd;
+            --border-color: #e9ecef;
+            --accent-color: #0066ff;
+            --accent-hover: #0052cc;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
             
-            --midnight: #2c3e50;
-            --late-night: #34495e;
-            --dawn: #3498db;
-            --early-morning: #2980b9;
-            --mid-morning: #1abc9c;
-            --late-morning: #16a085;
-            --early-afternoon: #f1c40f;
-            --late-afternoon: #f39c12;
-            --early-evening: #9b59b6;
-            --late-evening: #8e44ad;
-            --early-night: #e74c3c;
-            --late-night-dark: #c0392b;
+            --positive-color: #10b981;
+            --negative-color: #ef4444;
+            --neutral-color: #6c757d;
+            
+            --midnight: #1e293b;
+            --late-night: #334155;
+            --dawn: #0ea5e9;
+            --early-morning: #0284c7;
+            --mid-morning: #14b8a6;
+            --late-morning: #0d9488;
+            --early-afternoon: #eab308;
+            --late-afternoon: #f59e0b;
+            --early-evening: #a855f7;
+            --late-evening: #9333ea;
+            --early-night: #f43f5e;
+            --late-night-dark: #e11d48;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #707070;
+            --border-color: #2a2a2a;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
 
         * {
@@ -35,10 +59,12 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             padding: 20px;
             min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .container {
@@ -46,131 +72,187 @@
             margin: 0 auto;
         }
 
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
         .title {
-            text-align: center;
-            color: var(--primary-color);
-            margin: 1rem 0;
-            font-size: 2.8em;
-            letter-spacing: 1.5px;
+            color: var(--text-primary);
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-toggle:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .theme-option {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .theme-option.active {
+            background: var(--accent-color);
+            color: white;
         }
 
         .controls {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: center;
-            margin: 2rem 0;
+            gap: 1rem;
+            margin-bottom: 2rem;
             align-items: center;
         }
 
         .search-box {
-            width: 100%;
-            max-width: 500px;
+            flex: 1;
+            min-width: 250px;
             padding: 12px 20px;
-            border: 2px solid var(--secondary-color);
-            border-radius: 30px;
-            font-size: 1.1em;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background: var(--bg-card);
+            color: var(--text-primary);
             outline: none;
-            transition: box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
         }
 
         .search-box:focus {
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .format-selector {
             position: relative;
-            min-width: 200px;
+            min-width: 180px;
         }
 
         .format-select {
             width: 100%;
             padding: 12px 40px 12px 20px;
-            border: 2px solid var(--secondary-color);
-            border-radius: 30px;
-            background-color: white;
-            font-size: 1em;
-            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.95rem;
             appearance: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
         }
 
         .format-select:hover {
-            box-shadow: 0 0 12px rgba(52, 152, 219, 0.15);
+            border-color: var(--accent-color);
         }
 
         .format-select:focus {
             outline: none;
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .selector-arrow {
             position: absolute;
-            right: 20px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
             pointer-events: none;
-            color: var(--primary-color);
-            font-size: 0.8em;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
         }
 
         .clock-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-            padding: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
         }
 
         .clock-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.8rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
             transition: all 0.3s ease;
             position: relative;
-            min-height: 220px;
+            min-height: 200px;
+            box-shadow: var(--shadow-sm);
         }
 
         .clock-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-color);
         }
 
         .clock-card.local-timezone {
-            border: 3px solid var(--secondary-color);
-            background-color: #f8faff;
+            border: 2px solid var(--accent-color);
+            background: var(--bg-secondary);
+        }
+
+        .clock-card.local-timezone::before {
+            content: "Your Timezone";
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .city-name {
-            font-size: 1.4em;
-            color: var(--secondary-color);
-            margin-bottom: 0.8rem;
-            font-weight: 700;
-            text-align: center;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
         }
 
         .time {
-            font-size: 2.4em;
-            color: var(--primary-color);
+            font-size: 2.25rem;
+            color: var(--text-primary);
             margin-bottom: 0.5rem;
-            font-family: 'Courier New', monospace;
-            text-align: center;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-weight: 500;
+            letter-spacing: -1px;
         }
 
         .date {
-            color: #7f8c8d;
-            font-size: 0.95em;
-            text-align: center;
-            margin-bottom: 0.8rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
         }
 
         .time-difference {
-            font-size: 1.2em;
-            margin: 1rem 0;
-            font-family: 'Courier New', monospace;
-            text-align: center;
-            font-weight: 600;
+            font-size: 1rem;
+            margin: 0.75rem 0;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-weight: 500;
         }
 
         .neutral-diff { color: var(--neutral-color); }
@@ -178,14 +260,14 @@
         .negative-diff { color: var(--negative-color); }
 
         .time-period {
-            font-size: 0.85em;
-            padding: 4px 12px;
-            border-radius: 15px;
-            margin: 0.5rem 0;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
             display: inline-block;
             text-transform: uppercase;
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             color: white;
         }
 
@@ -203,30 +285,34 @@
         .period-late-night-dark { background-color: var(--late-night-dark); }
 
         .timezone-info {
-            font-size: 0.85em;
-            color: #95a5a6;
-            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
             margin-top: 0.5rem;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
         }
 
         .scroll-top {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: var(--secondary-color);
+            background: var(--accent-color);
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: none;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            border: none;
+            font-size: 1.25rem;
         }
 
         .scroll-top:hover {
-            transform: scale(1.1);
+            background: var(--accent-hover);
+            transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
@@ -234,10 +320,10 @@
                 grid-template-columns: 1fr;
             }
             .title {
-                font-size: 2.2em;
+                font-size: 1.5rem;
             }
             .time {
-                font-size: 2em;
+                font-size: 1.875rem;
             }
             .controls {
                 flex-direction: column;
@@ -246,13 +332,33 @@
             .format-selector {
                 width: 100%;
             }
+            .search-box {
+                min-width: 100%;
+            }
+            .header {
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="title">World Clock</h1>
+        <div class="header">
+            <h1 class="title">World Clock</h1>
+            <div class="theme-toggle" id="themeToggle">
+                <div class="theme-option active" data-theme="light">Light</div>
+                <div class="theme-option" data-theme="dark">Dark</div>
+            </div>
+        </div>
         <div class="controls">
+            <input type="text" class="search-box" placeholder="Search timezones..." id="searchInput">
             <div class="format-selector">
                 <select class="format-select" id="formatSelect">
                     <option value="12">12-hour format</option>
@@ -260,10 +366,9 @@
                 </select>
                 <span class="selector-arrow">▼</span>
             </div>
-            <input type="text" class="search-box" placeholder="Search time zones..." id="searchInput">
         </div>
         <div class="clock-container" id="clockContainer"></div>
-        <div class="scroll-top" id="scrollTop">↑</div>
+        <button class="scroll-top" id="scrollTop">↑</button>
     </div>
 
     <script>
@@ -274,15 +379,18 @@
                 this.searchInput = document.getElementById('searchInput');
                 this.scrollTopButton = document.getElementById('scrollTop');
                 this.formatSelect = document.getElementById('formatSelect');
+                this.themeToggle = document.getElementById('themeToggle');
                 this.allTimeZones = [];
                 this.filteredTimeZones = [];
                 this.userOffset = 0;
                 this.is24HourFormat = false;
+                this.currentTheme = 'light';
                 this.initialize();
             }
 
             async initialize() {
                 this.setupEventListeners();
+                this.loadThemePreference();
                 await this.loadTimeZones();
                 this.createClocks();
                 this.startUpdates();
@@ -294,6 +402,32 @@
                 window.addEventListener('scroll', () => this.toggleScrollTopButton());
                 this.scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
                 this.formatSelect.addEventListener('change', () => this.changeTimeFormat());
+                
+                this.themeToggle.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('theme-option')) {
+                        this.changeTheme(e.target.dataset.theme);
+                    }
+                });
+            }
+
+            changeTheme(theme) {
+                this.currentTheme = theme;
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                
+                document.querySelectorAll('.theme-option').forEach(option => {
+                    option.classList.toggle('active', option.dataset.theme === theme);
+                });
+            }
+
+            loadThemePreference() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    this.changeTheme(savedTheme);
+                } else {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    this.changeTheme(prefersDark ? 'dark' : 'light');
+                }
             }
 
             changeTimeFormat() {
@@ -370,8 +504,8 @@
                 
                 clock.className = `clock-card ${tz.fullName === this.userTimeZone ? 'local-timezone' : ''}`;
                 clock.innerHTML = `
-                    <div class="city-name">${tz.name}</div>
                     <div class="time-period"></div>
+                    <div class="city-name">${tz.name}</div>
                     <div class="time">00:00:00</div>
                     <div class="date">${new Date().toLocaleDateString()}</div>
                     <div class="time-difference ${diffClass}">${this.formatTimeDifference(diffMinutes)}</div>
@@ -414,8 +548,8 @@
                         hour: '2-digit',
                         minute: '2-digit',
                         second: '2-digit',
-                        hour12: !this.is24HourFormat
-                    };
+                        hour12: !this.is2
+                                            };
                     
                     const dateOptions = {
                         timeZone: tz.fullName,
@@ -477,4 +611,4 @@
         window.addEventListener('load', () => new WorldClock());
     </script>
 </body>
-  </html>
+</html>
